@@ -32,7 +32,7 @@ namespace Microsoft.Azure.WebJobs.Script.WebHost.Middleware
             };
             if (hostEasyAuthOptions.Value.SiteAuthEnabled)
             {
-                var easyAuthMiddleware = new EasyAuthMiddleware(contextNext, _configuration);
+                var easyAuthMiddleware = new EasyAuthMiddleware(contextNext, _configuration, AppService.Middleware.Functions.FunctionsHostingEnvironment.LinuxConsumption);
                 _invoke = easyAuthMiddleware.InvokeAsync;
             }
             else
