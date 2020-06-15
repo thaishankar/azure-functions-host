@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using DryIoc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -99,6 +100,19 @@ namespace Microsoft.Azure.WebJobs.Script.WebHost.Controllers
             _logger.LogInformation(message);
 
             return Ok(status);
+        }
+
+        [HttpPost]
+        [HttpGet]
+        [Route("admin/host/drain")]
+        public async Task<IActionResult> Drain([FromServices] IDrainModeManager drainModeManager)
+        {
+            _logger.LogInformation("Received request for draining host");
+            if (!drainModeManager.DrainModeEnabled)
+            {
+                await drainModeManager.EnableDrainModeAsync();
+            }
+            return Ok();
         }
 
         [HttpGet]
