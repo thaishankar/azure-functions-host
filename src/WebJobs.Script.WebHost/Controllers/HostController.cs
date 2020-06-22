@@ -103,8 +103,9 @@ namespace Microsoft.Azure.WebJobs.Script.WebHost.Controllers
         }
 
         [HttpPost]
-        [HttpGet]
         [Route("admin/host/drain")]
+        [Authorize(Policy = PolicyNames.AdminAuthLevelOrInternal)]
+        [TypeFilter(typeof(EnableDebugModeFilter))]
         public async Task<IActionResult> Drain([FromServices] IDrainModeManager drainModeManager)
         {
             _logger.LogInformation("Received request for draining host");
