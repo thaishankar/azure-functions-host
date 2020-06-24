@@ -105,14 +105,12 @@ namespace Microsoft.Azure.WebJobs.Script.WebHost.Controllers
         [HttpPost]
         [Route("admin/host/drain")]
         [Authorize(Policy = PolicyNames.AdminAuthLevelOrInternal)]
-        [TypeFilter(typeof(EnableDebugModeFilter))]
-        public async Task<IActionResult> Drain([FromServices] IDrainModeManager drainModeManager)
+        public IActionResult Drain([FromServices] IDrainModeManager drainModeManager)
         {
             _logger.LogInformation("Received request for draining host");
-            if (!drainModeManager.DrainModeEnabled)
-            {
-                await drainModeManager.EnableDrainModeAsync();
-            }
+
+            // Stop call to some listeners get stuck, Not waiting for the stop call to complete
+            drainModeManager.EnableDrainModeAsync().ConfigureAwait(false);
             return Ok();
         }
 
