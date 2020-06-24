@@ -203,7 +203,7 @@ namespace Microsoft.Azure.WebJobs.Script.Tests.Workers.Rpc
         public void SendInvocationRequest_PublishesOutboundEvent()
         {
             ScriptInvocationContext scriptInvocationContext = GetTestScriptInvocationContext(Guid.NewGuid(), null);
-            _workerChannel.SendInvocationRequest(scriptInvocationContext);
+            //_workerChannel.SendInvocationRequest(scriptInvocationContext);
             var traces = _logger.GetLogMessages();
             Assert.True(traces.Any(m => string.Equals(m.FormattedMessage, _expectedLogMsg)));
         }
@@ -212,7 +212,7 @@ namespace Microsoft.Azure.WebJobs.Script.Tests.Workers.Rpc
         public void SendInvocationRequest_IsInExecutingInvocation()
         {
             ScriptInvocationContext scriptInvocationContext = GetTestScriptInvocationContext(Guid.NewGuid(), null);
-            _workerChannel.SendInvocationRequest(scriptInvocationContext);
+            //_workerChannel.SendInvocationRequest(scriptInvocationContext);
             Assert.True(_workerChannel.IsExecutingInvocation(scriptInvocationContext.ExecutionContext.InvocationId.ToString()));
             Assert.False(_workerChannel.IsExecutingInvocation(Guid.NewGuid().ToString()));
         }
@@ -254,7 +254,7 @@ namespace Microsoft.Azure.WebJobs.Script.Tests.Workers.Rpc
         {
             var resultSource = new TaskCompletionSource<ScriptInvocationResult>();
             ScriptInvocationContext scriptInvocationContext = GetTestScriptInvocationContext(Guid.NewGuid(), resultSource);
-            _workerChannel.SendInvocationRequest(scriptInvocationContext);
+            //_workerChannel.SendInvocationRequest(scriptInvocationContext);
             Assert.True(_workerChannel.IsExecutingInvocation(scriptInvocationContext.ExecutionContext.InvocationId.ToString()));
             Exception workerException = new Exception("worker failed");
             _workerChannel.TryFailExecutions(workerException);
